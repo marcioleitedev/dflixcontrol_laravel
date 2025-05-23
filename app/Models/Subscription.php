@@ -20,7 +20,8 @@ class Subscription extends Model
         'city',
         'state',
         'phone',
-        'company_name'
+        'company_name',
+        'affiliate'
     ];
 
     /**
@@ -36,5 +37,10 @@ class Subscription extends Model
     public function payments()
     {
         return $this->hasMany(Payment::class);
+    }
+
+    public function affiliate()
+    {
+        return $this->belongsTo(User::class, 'affiliate');
     }
 }

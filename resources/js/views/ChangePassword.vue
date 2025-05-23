@@ -5,14 +5,14 @@
       <div class="col-md-5">
         <div class="card shadow">
           <div class="card-body">
-            <h2 class="card-title text-center mb-4">Login</h2>
-            <form @submit.prevent="login">
+            <h2 class="card-title text-center mb-4">Alterar sua Senha</h2>
+            <form @submit.prevent="forgot">
               <div class="mb-3">
                 <label for="email" class="form-label">E-mail</label>
-                <input type="email" v-model="form.email" class="form-control" id="email" required />
+                <input type="email" v-model="form.email" class="form-control" id="email" required readonly />
               </div>
 <div class="position-relative">
-  <label for="password" class="form-label">Senha</label>
+  <label for="password" class="form-label">Nova Senha</label>
   <div class="input-group">
     <input
       :type="showPassword ? 'text' : 'password'"
@@ -26,7 +26,6 @@
     </span>
   </div>
 </div>
-
               <button type="submit" class="btn btn-primary w-100" :disabled="loading">
                 Entrar
               </button>
@@ -45,6 +44,8 @@
 
 <script>
 import axios from 'axios'
+import { useRouter } from 'vue-router'
+import { onMounted } from 'vue'
 
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
@@ -65,25 +66,31 @@ export default {
       showPassword: false,
     }
   },
+  mounted(){
+     const email = this.$route.query.email
+    if (email) {
+      this.form.email = email
+    }
+  },
   methods: {
-    async login() {
+    async forgot() {
       this.loading = true
       this.error = ''
 
       try {
-        const response = await axios.post('/api/login', this.form)
+        const response = await axios.post('/api/change', this.form)
 
         localStorage.setItem('token', response.data.access_token)
         axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access_token}`
 
-        this.$router.push('/dashboard')
+        this.$router.push('/login')
       } catch (err) {
         this.error = 'E-mail ou senha inválidos'
       } finally {
         this.loading = false
       }
     },
-    togglePassword() {
+     togglePassword() {
     this.showPassword = !this.showPassword
   }
   },

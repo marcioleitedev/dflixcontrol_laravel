@@ -27,48 +27,45 @@
           <tr>
             <th>Funcionalidade</th>
             <th>Plano Básico</th>
-            <th>Plano Ideal</th>
-            <th class="table-primary">Plano Mega</th>
-            <th>Plano Business</th>
+            <th>Plano Fiscal</th>
+           
           </tr>
         </thead>
         <tbody>
           <!-- Categorias e funcionalidades -->
           <tr class="table-secondary"><th colspan="5" class="text-start">Financeiro</th></tr>
-          <tr><td>Contas a pagar e contas a receber</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>Emissão de boletos</td><td>✘</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>Controle de caixa</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>DRE - Demonstração do Resultado do Exercício</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>Fluxo de caixa</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>Centro de custos</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>Planos de contas</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
+          <tr><td>Contas a pagar e contas a receber</td><td>✔</td><td>✔</td></tr>
+          <tr><td>Controle de caixa</td><td>✔</td><td>✔</td></tr>
+          <tr><td>DRE - Demonstração do Resultado do Exercício</td><td>✔</td><td>✔</td></tr>
+          <tr><td>Fluxo de caixa</td><td>✔</td><td>✔</td></tr>
+          <tr><td>Centro de custos</td><td>✔</td><td>✔</td></tr>
+          <tr><td>Planos de contas</td><td>✔</td><td>✔</td></tr>
 
           <tr class="table-secondary"><th colspan="5" class="text-start">Nota Fiscal (ilimitadas)</th></tr>
-          <tr><td>NFS-E (emissão automática)</td><td>✘</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>NF-E (emissão automática)</td><td>✘</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>NFC-E (emissão automática)</td><td>✘</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
+          <tr><td>NFS-E (emissão automática)</td><td>✘</td><td>✔</td></tr>
+          <tr><td>NF-E (emissão automática)</td><td>✘</td><td>✔</td></tr>
+          <tr><td>NFC-E (emissão automática)</td><td>✘</td><td>✔</td></tr>
 
           <tr class="table-secondary"><th colspan="5" class="text-start">Vendas</th></tr>
-          <tr><td>Orçamentos</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>Venda de produtos (mais detalhada)</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>Venda balcão (frente de caixa pdv)</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>Integração com balança (Prix)</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>Trocas e devoluções</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>Cupom presente</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>Cupom não fiscal</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>Envio da venda por WhatsApp e e-mail</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>Venda com mais de uma forma de pagamento</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>Situações de venda personalizáveis</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>Venda por leitura do código de barras</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>Relatórios de vendas</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
+          <tr><td>Orçamentos</td><td>✔</td><td>✔</td></tr>
+          <tr><td>Venda de produtos (mais detalhada)</td><td>✔</td><td>✔</td></tr>
+          <!-- <tr><td>Venda balcão (frente de caixa pdv)</td><td>✔</td><td>✔</td></tr>
+          <tr><td>Integração com balança (Prix)</td><td>✔</td><td>✔</td></tr> -->
+          <!-- <tr><td>Trocas e devoluções</td><td>✔</td><td>✔</td></tr>
+          <tr><td>Cupom presente</td><td>✔</td><td>✔</td></tr>
+          <tr><td>Cupom não fiscal</td><td>✔</td><td>✔</td></tr> -->
+          <tr><td>Envio da venda por WhatsApp e e-mail</td><td>✔</td><td>✔</td></tr>
+          <tr><td>Venda com mais de uma forma de pagamento</td><td>✔</td><td>✔</td></tr>
+          <tr><td>Situações de venda personalizáveis</td><td>✔</td><td>✔</td></tr>
+          <tr><td>Relatórios de vendas</td><td>✔</td><td>✔</td></tr>
 
           <tr class="table-secondary"><th colspan="5" class="text-start">Gestão de cadastros</th></tr>
-          <tr><td>Cartela de clientes (ilimitados)</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>Cadastro de funcionários</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>Cadastro de fornecedores e transportadoras</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>Restrições de permissões dos usuários</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>Controle de logs de usuários</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
-          <tr><td>Cadastro por importação via planilha ou NF-e</td><td>✔</td><td>✔</td><td class="table-primary">✔</td><td>✔</td></tr>
+          <tr><td>Cartela de clientes (ilimitados)</td><td>✔</td><td>✔</td></tr>
+          <tr><td>Cadastro de funcionários</td><td>✔</td><td>✔</td></tr>
+          <tr><td>Cadastro de fornecedores e transportadoras</td><td>✔</td><td>✔</td></tr>
+          <tr><td>Restrições de permissões dos usuários</td><td>✔</td><td>✔</td></tr>
+          <tr><td>Controle de logs de usuários</td><td>✔</td><td>✔</td></tr>
+
         </tbody>
       </table>
     </div>

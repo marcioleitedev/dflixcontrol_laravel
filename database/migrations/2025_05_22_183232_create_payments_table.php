@@ -17,7 +17,7 @@ return new class extends Migration
             $table->float('value')->nullable();;
             $table->string('payment_method')->nullable();
             $table->boolean('status')->default(true);
-            $table->string('transaction_id')->unique();
+            $table->string('transaction_id')->unique()->nullable();
             $table->date('limit_date')->nullable();
             $table->timestamps();
         });

@@ -6,13 +6,23 @@ import Login from '../views/Login.vue'
 import Plans from '../views/Plans.Vue'
 import Dashboard from '../views/Dashboard.vue'
 import Signature from '../views/Signature.vue'
+import Forgot from '../views/Forgot.vue'
+import ChangePassword from '../views/ChangePassword.vue'
+import Welcome from '../views/Welcome.vue'
+import Assinaturas from '../views/Dashboard/Assinaturas.vue'
+import Afiliados from '../views/Dashboard/Afiliados.vue'
 
 const routes = [
     { path: '/', component: Home },
     { path: '/planos', component: Plans },
     { path: '/login', component: Login },
+    { path: '/welcome', component: Welcome },
+    { path: '/forgot', component: Forgot },
+    { path: '/change-password', component: ChangePassword },
     { path: '/assinar/:id', component: Signature },
-    { path: '/dashboard', component: Dashboard },
+    { path: '/dashboard', component: Dashboard, meta: { requiresAuth: true } },
+    { path: '/dashboard/assinaturas', component: Assinaturas, meta: { requiresAuth: true } },
+    { path: '/dashboard/afiliados', component: Afiliados, meta: { requiresAuth: true } },
 ]
 
 const router = createRouter({
