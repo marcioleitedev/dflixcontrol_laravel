@@ -1,4 +1,5 @@
 <template>
+  <Navbar />
   <div class="container mt-5">
     <h1 class="text-center mb-4">Planos</h1>
 
@@ -72,12 +73,15 @@
       </table>
     </div>
   </div>
+  <Footer />
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import Navbar from '@/components/Navbar.vue'
+import Footer from '@/components/Footer.vue'
 
 const plans = ref([])
 const router = useRouter()

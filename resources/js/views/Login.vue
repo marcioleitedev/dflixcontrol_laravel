@@ -1,4 +1,5 @@
 <template>
+   <Navbar />
   <div class="container mt-5">
     <div class="row justify-content-center">
       <div class="col-md-5">
@@ -24,13 +25,20 @@
       </div>
     </div>
   </div>
+  <Footer />
 </template>
 
 <script>
 import axios from 'axios'
 
+import Navbar from '@/components/Navbar.vue'
+import Footer from '@/components/Footer.vue'
+
 export default {
   name: 'Login',
+    components: {
+    Navbar, Footer
+  },
   data() {
     return {
       form: {
@@ -64,12 +72,17 @@ export default {
 </script>
 
 <style scoped>
+.container{
+  margin-top: 150px;
+  margin-bottom: 150px;
+}
 .login-container {
   max-width: 400px;
-  margin: 40px auto;
+
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 6px;
+
 }
 input {
   width: 100%;

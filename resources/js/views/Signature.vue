@@ -1,4 +1,5 @@
 <template>
+   <Navbar />
   <div class="signature-container">
     <h1>Assinatura</h1>
     <!-- Flash message -->
@@ -45,6 +46,7 @@
       <button type="submit">Assinar</button>
     </form>
   </div>
+  <Footer />
 </template>
 
 <script setup>
@@ -52,6 +54,8 @@ import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import axios from 'axios'
 import FlashMessage from '@/components/FlashMessage.vue'
+import Navbar from '@/components/Navbar.vue'
+import Footer from '@/components/Footer.vue'
 
 const flashRef = ref(null)
 

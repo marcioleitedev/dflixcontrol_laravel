@@ -3,8 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Auto Center</title>
+    <title>Dflix Control</title>
     @vite('resources/js/app.js')
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 
 <body>
