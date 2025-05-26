@@ -4,28 +4,31 @@
 
     <div class="container-fluid mt-4">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>Afiliados</h1>
-        <button class="btn btn-primary" @click="abrirCadastro">Cadastrar Afiliado</button>
+        <h1>Roles</h1>
+        <button class="btn btn-primary" @click="abrirCadastro">Cadastrar Role</button>
       </div>
 
-      <!-- Flash message -->
       <FlashMessage ref="flashRef" />
 
       <table class="table table-bordered">
         <thead>
           <tr>
-            <th>Afiliado</th>
-            <th>Email</th>
+            <th>Nível</th>
+            <th>Texto Inferior</th>
+            <th>URL</th>
+            <th>Ícone</th>
             <th>Ações</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="assinatura in assinaturas" :key="assinatura.id">
-            <td>{{ assinatura.name }}</td>
-            <td>{{ assinatura.email }}</td>
+          <tr v-for="role in roles" :key="role.id">
+            <td>{{ role.level }}</td>
+            <td>{{ role.bottom_text }}</td>
+            <td>{{ role.link_url }}</td>
+            <td>{{ role.icon }}</td>
             <td>
-              <button class="btn btn-sm btn-warning me-2" @click="abrirEdicao(assinatura)">Editar</button>
-              <button class="btn btn-sm btn-danger" @click="excluirAfiliado(assinatura.id)">Excluir</button>
+              <button class="btn btn-sm btn-warning me-2" @click="abrirEdicao(role)">Editar</button>
+              <button class="btn btn-sm btn-danger" @click="excluirRole(role.id)">Excluir</button>
             </td>
           </tr>
         </tbody>
@@ -34,24 +37,24 @@
       <nav>
         <ul class="pagination">
           <li class="page-item" :class="{ disabled: !pagination.prev_page_url }">
-            <button class="page-link" @click="fetchAssinaturas(pagination.current_page - 1)">Anterior</button>
+            <button class="page-link" @click="fetchRoles(pagination.current_page - 1)">Anterior</button>
           </li>
           <li v-for="link in pagination.links" :key="link.label" class="page-item" :class="{ active: link.active, disabled: !link.url }">
             <button class="page-link" v-html="link.label" @click="link.url && goToPage(link.url)"></button>
           </li>
           <li class="page-item" :class="{ disabled: !pagination.next_page_url }">
-            <button class="page-link" @click="fetchAssinaturas(pagination.current_page + 1)">Próximo</button>
+            <button class="page-link" @click="fetchRoles(pagination.current_page + 1)">Próximo</button>
           </li>
         </ul>
       </nav>
     </div>
 
-    <ModalAfiliado
+    <ModalRole
       v-if="mostrarModal"
       :modo="modoModal"
-      :afiliado="afiliadoSelecionado"
+      :role="roleSelecionado"
       @fechar="fecharModal"
-      @atualizar="onAtualizarAfiliado"
+      @atualizar="onAtualizarRole"
     />
   </div>
 </template>
@@ -59,23 +62,23 @@
 <script>
 import axios from 'axios'
 import MenuDashboard from '@/components/MenuDashboard.vue'
-import ModalAfiliado from '@/components/ModalAfiliado.vue'
+import ModalRole from '@/components/ModalRole.vue'
 import FlashMessage from '@/components/FlashMessage.vue'
 
 export default {
-  name: 'Dashboard',
+  name: 'RoleDashboard',
   components: {
     MenuDashboard,
-    ModalAfiliado,
+    ModalRole,
     FlashMessage,
   },
   data() {
     return {
-      assinaturas: [],
+      roles: [],
       pagination: {},
       mostrarModal: false,
-      modoModal: 'criar', // ou 'editar'
-      afiliadoSelecionado: null,
+      modoModal: 'criar',
+      roleSelecionado: null,
     }
   },
   mounted() {
@@ -84,14 +87,14 @@ export default {
       this.$router.push('/login')
     } else {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-      this.fetchAssinaturas()
+      this.fetchRoles()
     }
   },
   methods: {
-    async fetchAssinaturas(page = 1) {
+    async fetchRoles(page = 1) {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/affiliate?page=${page}`)
-        this.assinaturas = response.data.data
+        const response = await axios.get(`http://127.0.0.1:8000/api/roles?page=${page}`)
+        this.roles = response.data.data
         this.pagination = {
           current_page: response.data.current_page,
           next_page_url: response.data.next_page_url,
@@ -99,22 +102,22 @@ export default {
           links: response.data.links,
         }
       } catch (error) {
-        console.error('Erro ao buscar afiliados:', error)
-        this.$refs.flashRef.mostrar('Erro ao buscar afiliados.', 'danger')
+        console.error('Erro ao buscar roles:', error)
+        this.$refs.flashRef.showMessage('Erro ao buscar roles.', 'danger')
       }
     },
     goToPage(url) {
       const urlObj = new URL(url)
       const page = urlObj.searchParams.get('page')
-      this.fetchAssinaturas(page)
+      this.fetchRoles(page)
     },
     abrirCadastro() {
-      this.afiliadoSelecionado = null
+      this.roleSelecionado = null
       this.modoModal = 'criar'
       this.mostrarModal = true
     },
-    abrirEdicao(afiliado) {
-      this.afiliadoSelecionado = { ...afiliado }
+    abrirEdicao(role) {
+      this.roleSelecionado = { ...role }
       this.modoModal = 'editar'
       this.mostrarModal = true
     },
@@ -124,27 +127,26 @@ export default {
       document.querySelectorAll('.modal-backdrop').forEach(el => el.remove())
       document.body.classList.remove('modal-open')
     },
-    async excluirAfiliado(id) {
-      if (confirm('Deseja realmente excluir este afiliado?')) {
+    async excluirRole(id) {
+      if (confirm('Deseja realmente excluir este role?')) {
         try {
-          await axios.delete(`http://127.0.0.1:8000/api/affiliate/${id}`)
-          this.fetchAssinaturas()
-         
-          this.$refs.flashRef.showMessage('Afiliado excluído com sucesso!', 'success')
+          await axios.delete(`http://127.0.0.1:8000/api/roles/${id}`)
+          this.fetchRoles()
+          this.$refs.flashRef.showMessage('Role excluído com sucesso!', 'success')
         } catch (error) {
-          console.error('Erro ao excluir afiliado:', error)
-          this.$refs.flashRef.showMessage('Erro ao excluir afiliado.', 'danger')
+          console.error('Erro ao excluir role:', error)
+          this.$refs.flashRef.showMessage('Erro ao excluir role.', 'danger')
         }
       }
     },
-    onAtualizarAfiliado(acao) {
-      this.fetchAssinaturas()
+    onAtualizarRole(acao) {
+      this.fetchRoles()
       this.fecharModal()
-      if (acao === 'criado') {
-        this.$refs.flashRef.showMessage('Afiliado cadastrado com sucesso!', 'success')
-      } else if (acao === 'editado') {
-        this.$refs.flashRef.showMessage('Afiliado atualizado com sucesso!', 'success')
+      const mensagens = {
+        criado: 'Role cadastrado com sucesso!',
+        editado: 'Role atualizado com sucesso!',
       }
+      this.$refs.flashRef.showMessage(mensagens[acao], 'success')
     },
   },
 }

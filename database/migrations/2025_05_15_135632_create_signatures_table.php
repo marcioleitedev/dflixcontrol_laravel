@@ -11,7 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('subscriptions', function (Blueprint $table) {
+        Schema::create('signatures', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email');
+            $table->boolean('status')->default(true);
+
+            $table->foreignId('plan_id')->constrained('plans');
+            $table->foreignId('affiliate')->nullable()->constrained('users')->onDelete('set null');
+
             $table->string('cpf')->unique();
             $table->string('cep');
             $table->string('address');
@@ -22,6 +30,9 @@ return new class extends Migration
             $table->string('state');
             $table->string('phone');
             $table->string('company_name');
+
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -30,8 +41,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('subscriptions', function (Blueprint $table) {
-            $table->dropColumn('cpf');
-        });
+        Schema::dropIfExists('signatures');
     }
 };

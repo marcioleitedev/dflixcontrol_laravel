@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('subscription_id')->constrained('subscriptions')->onDelete('cascade');
             $table->float('value')->nullable();;
             $table->string('payment_method')->nullable();
             $table->boolean('status')->default(true);
             $table->string('transaction_id')->unique()->nullable();
             $table->date('limit_date')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreignId('signature_id')->constrained('signatures')->onDelete('cascade');
         });
     }
 

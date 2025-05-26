@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Subscription;
+use App\Models\Signature;
 use App\Models\User;
 use App\Mail\WelcomeMail;
 use App\Mail\ForgotMail;
@@ -20,7 +20,7 @@ class SignatureController extends Controller
      */
     public function index()
     {
-        $signature = Subscription::with(['plan', 'payments', 'affiliate'])->paginate(10);
+        $signature = Signature::with(['plan', 'payments', 'affiliate', 'user'])->paginate(10);
 
         return response()->json($signature);
     }
@@ -30,7 +30,7 @@ class SignatureController extends Controller
      */
     public function store(Request $request)
     {
-        $signature = Subscription::create($request->all());
+        $signature = Signature::create($request->all());
 
         if ($signature) {
             $password = Str::random(10); // 10 caracteres aleatórios
@@ -40,13 +40,13 @@ class SignatureController extends Controller
                 'email' => $request['email'],
                 'password' => Hash::make($password),
                 'level' => 1,
-                'subscriptions_id' => $signature->id,
+                'id_signature' => $signature->id,
             ];
             $user = User::create($payloadUser);
 
             // creeate payment
             $payloadPayment = [
-                'subscription_id' => $signature->id,
+                'signature_id' => $signature->id,
                 'value' => 0,
                 'payment_method' => 'teste',
                 'status' => 1,

@@ -28,7 +28,7 @@
             <td>{{ assinatura.plan.price.toFixed(2) }}</td>
             <td>{{ formatDate(assinatura.payments[0]?.limit_date) }}</td>
             <td>{{ diasParaVencimento(assinatura.payments[0]?.limit_date) }}</td>
-            <td>{{ assinatura.affiliate.name }}</td>
+            <td>{{ assinatura.user.name ?? 'Sem usuário' }}</td>
           </tr>
         </tbody>
       </table>

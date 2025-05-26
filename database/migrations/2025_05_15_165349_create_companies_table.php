@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
+
             $table->string('name');
             $table->string('cep');
             $table->string('address');
@@ -23,8 +24,11 @@ return new class extends Migration
             $table->string('state');
             $table->string('phone');
             $table->string('email');
-            $table->foreignId('plan_id')->constrained('plans')->onDelete('cascade');
+
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreignId('signature_id')->constrained('signatures')->onDelete('cascade');
         });
     }
 

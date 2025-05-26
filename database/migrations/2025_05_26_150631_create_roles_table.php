@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('subscriptions', function (Blueprint $table) {
-            $table->foreignId('affiliate')->constrained('user')->after('plan_id');
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id();
+            $table->integer('level');
+            $table->string('bottom_text')->nullable();
+            $table->string('link_url')->nullable();
+            $table->string('icon')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -21,8 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('subscriptions', function (Blueprint $table) {
-            $table->dropColumn('affiliate');
-        });
+        Schema::dropIfExists('roles');
     }
 };

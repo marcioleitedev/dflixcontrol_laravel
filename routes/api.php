@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PlansController;
+use App\Http\Controllers\RolerController;
 use App\Http\Controllers\SignatureController;
 use App\Http\Controllers\UserController;
 
@@ -19,10 +20,16 @@ Route::get('/signature', [SignatureController::class, 'index']);
 Route::get('/signature/{id}', [SignatureController::class, 'show']);
 
 //affiliate
+Route::get('/users', [UserController::class, 'index']);
+Route::get('/users/{id}', [UserController::class, 'show']);
 Route::get('/affiliate', [UserController::class, 'affiliate']);
 Route::post('/affiliate', [UserController::class, 'affiliateStore']);
 Route::put('/affiliate/{id}', [UserController::class, 'affiliateUpdate']);
 Route::delete('/affiliate/{id}', [UserController::class, 'affiliateDelete']);
+
+// roles
+Route::get('/roles', [RolerController::class, 'index']);
+Route::post('/roles', [RolerController::class, 'store']);
 
 Route::middleware('auth:api')->group(function () {
     Route::get('dashboard', function () {

@@ -11,6 +11,7 @@ import ChangePassword from '../views/ChangePassword.vue'
 import Welcome from '../views/Welcome.vue'
 import Assinaturas from '../views/Dashboard/Assinaturas.vue'
 import Afiliados from '../views/Dashboard/Afiliados.vue'
+import Rolers from '../views/Dashboard/Rolers.vue'
 
 const routes = [
     { path: '/', component: Home },
@@ -23,6 +24,7 @@ const routes = [
     { path: '/dashboard', component: Dashboard, meta: { requiresAuth: true } },
     { path: '/dashboard/assinaturas', component: Assinaturas, meta: { requiresAuth: true } },
     { path: '/dashboard/afiliados', component: Afiliados, meta: { requiresAuth: true } },
+    { path: '/dashboard/roler', component: Rolers, meta: { requiresAuth: true } },
 ]
 
 const router = createRouter({

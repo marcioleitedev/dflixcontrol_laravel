@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Subscription extends Model
+class Signature extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'name',
         'email',
@@ -41,6 +44,11 @@ class Subscription extends Model
 
     public function affiliate()
     {
-        return $this->belongsTo(User::class, 'affiliate');
+        return $this->belongsTo(User::class, 'affiliate', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id', 'id_signature');
     }
 }

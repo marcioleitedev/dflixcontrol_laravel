@@ -16,7 +16,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::with(['roles'])->orderBy('id', 'desc')->paginate(10);
+        return response()->json($users);
     }
 
     public function affiliate()
@@ -78,7 +79,11 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = User::with(['roles'])->find($id);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+        return response()->json($user);
     }
 
     /**
