@@ -5,7 +5,7 @@
 
       <div class="container-fluid mt-4">
         <h1>Bem-vindo ao sistema Auto Center!</h1>
-        <p>Aqui você pode gerenciar seu negócio.</p>
+        <p>Aqui você pode gerenciar seu negócio aqui</p>
       </div>
     </div>
   <!-- </div> -->

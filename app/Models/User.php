@@ -52,7 +52,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function subscription()
     {
-        return $this->belongsTo(Signature::class, 'signature_id');
+        return $this->belongsTo(Signature::class, 'id_signature')->with(['plan', 'payments']);
     }
 
     public function roles()
@@ -71,6 +71,7 @@ class User extends Authenticatable implements JWTSubject
             'email' => $this->email,
             'name' => $this->name,
             'level' => $this->level,
+            'id_signature' => $this->id_signature,
             'roles' => $this->roles()->get(['user_id', 'roles_id'])->toArray(),
         ];
     }

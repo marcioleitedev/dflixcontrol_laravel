@@ -8,6 +8,7 @@
     >
       <div class="sidebar-heading border-bottom bg-light p-3">
        <strong>{{ userName || 'Dflix Control' }}</strong>
+       <strong>ID Signer: {{ signature  }}</strong>
       </div>
 
       <div v-if="roles.length" class="list-group list-group-flush">
@@ -67,6 +68,7 @@ export default {
     const payload = this.parseJwt(token)
   const userId = payload?.sub
   this.userName = payload?.name || payload?.nome || ''
+  this.signature = payload?.id_signature ||  ''
 
     try {
 

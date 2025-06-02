@@ -17,37 +17,30 @@ Route::post('/signature', [SignatureController::class, 'store']);
 Route::post('/forgot', [SignatureController::class, 'forgot']);
 Route::post('/change', [SignatureController::class, 'change']);
 
-Route::get('/signature', [SignatureController::class, 'index']);
-Route::get('/signature/{id}', [SignatureController::class, 'show']);
-
-//affiliate
-Route::get('/users', [UserController::class, 'index']);
-Route::get('/users/{id}', [UserController::class, 'show']);
-Route::get('/affiliate', [UserController::class, 'affiliate']);
-Route::post('/affiliate', [UserController::class, 'affiliateStore']);
-Route::put('/affiliate/{id}', [UserController::class, 'affiliateUpdate']);
-Route::delete('/affiliate/{id}', [UserController::class, 'affiliateDelete']);
-
-// roles
-Route::get('/roles', [RolerController::class, 'index']);
-Route::post('/roles', [RolerController::class, 'store']);
-Route::put('/roles/{id}', [RolerController::class, 'update']);
-Route::delete('/roles/{id}', [RolerController::class, 'destroy']);
-
-// Perfil Affiliate
-Route::delete('/profile/{id}', [PerfilAffiliateController::class, 'destroy']);
-Route::put('/profile/{id}', [PerfilAffiliateController::class, 'update']);
-Route::get('/profile/{id}', [PerfilAffiliateController::class, 'show']);
-Route::post('/profile', [PerfilAffiliateController::class, 'store']);
-Route::get('/profile', [PerfilAffiliateController::class, 'index']);
-
 Route::middleware('auth:api')->group(function () {
-    Route::get('dashboard', function () {
-        return response()->json(['message' => 'Bem vindo ao dashboard CRM!']);
-    });
 
-    // Outras rotas do CRM aqui
-    Route::get('crm/services', function () {
-        return response()->json(['services' => ['Serviço 1', 'Serviço 2']]);
-    });
+    Route::get('/signature', [SignatureController::class, 'index']);
+    Route::get('/signature/{id}', [SignatureController::class, 'show']);
+    Route::get('/signature/cliente/{id}', [SignatureController::class, 'showUser']);
+
+    //affiliate
+    Route::get('/users', [UserController::class, 'index']);
+    Route::get('/users/{id}', [UserController::class, 'show']);
+    Route::get('/affiliate', [UserController::class, 'affiliate']);
+    Route::post('/affiliate', [UserController::class, 'affiliateStore']);
+    Route::put('/affiliate/{id}', [UserController::class, 'affiliateUpdate']);
+    Route::delete('/affiliate/{id}', [UserController::class, 'affiliateDelete']);
+
+    // roles
+    Route::get('/roles', [RolerController::class, 'index']);
+    Route::post('/roles', [RolerController::class, 'store']);
+    Route::put('/roles/{id}', [RolerController::class, 'update']);
+    Route::delete('/roles/{id}', [RolerController::class, 'destroy']);
+
+    // Perfil Affiliate
+    Route::delete('/profile/{id}', [PerfilAffiliateController::class, 'destroy']);
+    Route::put('/profile/{id}', [PerfilAffiliateController::class, 'update']);
+    Route::get('/profile/{id}', [PerfilAffiliateController::class, 'show']);
+    Route::post('/profile', [PerfilAffiliateController::class, 'store']);
+    Route::get('/profile', [PerfilAffiliateController::class, 'index']);
 });

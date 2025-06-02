@@ -115,6 +115,15 @@ class SignatureController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function showUser(string $id)
+    {
+        $user = User::where('id_signature', $id)->with('subscription')->paginate(10);
+        return response()->json($user);
+    }
+
+    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
