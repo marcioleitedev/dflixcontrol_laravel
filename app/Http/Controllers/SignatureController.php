@@ -92,7 +92,8 @@ class SignatureController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = Signature::where('affiliate', $id)->paginate(10);
+        return response()->json($user);
     }
 
     /**

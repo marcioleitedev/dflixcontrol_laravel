@@ -39,7 +39,10 @@ class RolerController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
+        $role = Role::findOrFail($id);
+        $role->update($request->all());
+        return response()->json(['message' => 'Role updated successfully', 'role' => $role]);
     }
 
     /**

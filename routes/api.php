@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PerfilAffiliateController;
 use App\Http\Controllers\PlansController;
 use App\Http\Controllers\RolerController;
 use App\Http\Controllers\SignatureController;
@@ -30,6 +31,15 @@ Route::delete('/affiliate/{id}', [UserController::class, 'affiliateDelete']);
 // roles
 Route::get('/roles', [RolerController::class, 'index']);
 Route::post('/roles', [RolerController::class, 'store']);
+Route::put('/roles/{id}', [RolerController::class, 'update']);
+Route::delete('/roles/{id}', [RolerController::class, 'destroy']);
+
+// Perfil Affiliate
+Route::delete('/profile/{id}', [PerfilAffiliateController::class, 'destroy']);
+Route::put('/profile/{id}', [PerfilAffiliateController::class, 'update']);
+Route::get('/profile/{id}', [PerfilAffiliateController::class, 'show']);
+Route::post('/profile', [PerfilAffiliateController::class, 'store']);
+Route::get('/profile', [PerfilAffiliateController::class, 'index']);
 
 Route::middleware('auth:api')->group(function () {
     Route::get('dashboard', function () {
