@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Signature;
 use App\Models\User;
+use App\Models\Role;
 use App\Mail\WelcomeMail;
 use App\Mail\ForgotMail;
 use App\Models\Payment;
+use App\Models\UserRoler;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -43,6 +45,22 @@ class SignatureController extends Controller
                 'id_signature' => $signature->id,
             ];
             $user = User::create($payloadUser);
+
+            // create Rolers
+            $roles = Role::where('level', 1)->get();
+            $payloadRoles = [];
+            foreach ($roles as $role) {
+                $payloadRoles[] = [
+                    'user_id' => $user->id,
+                    'roles_id' => $role->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+            $cadRoler = UserRoler::insert($payloadRoles);
+            if (!$cadRoler) {
+                return response()->json(['message' => 'Erro ao atribuir roles ao usuário'], 500);
+            }
 
             // creeate payment
             $payloadPayment = [
