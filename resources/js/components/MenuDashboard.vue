@@ -7,8 +7,8 @@
       id="sidebar-wrapper"
     >
       <div class="sidebar-heading border-bottom bg-light p-3">
-       <strong>{{ userName || 'Dflix Control' }}</strong>
-       <strong>ID Signer: {{ signature  }}</strong>
+        <strong>{{ userName || 'Dflix Control' }}</strong><br>
+        <strong>ID Signer: {{ signature }}</strong>
       </div>
 
       <div v-if="roles.length" class="list-group list-group-flush">
@@ -26,7 +26,9 @@
         href="#"
         class="list-group-item list-group-item-action text-danger mt-2"
         @click="logout"
-      >Sair</a>
+      >
+        Sair
+      </a>
     </div>
 
     <!-- Page content -->
@@ -48,12 +50,13 @@
 import axios from 'axios'
 
 export default {
-  name: 'AppLayout',
+  name: 'MenuDashboard',
   data() {
     return {
       isSidebarHidden: false,
       roles: [],
       userName: '',
+      signature: '',
     }
   },
   async mounted() {
@@ -64,15 +67,14 @@ export default {
     }
 
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-
     const payload = this.parseJwt(token)
-  const userId = payload?.sub
-  this.userName = payload?.name || payload?.nome || ''
-  this.signature = payload?.id_signature ||  ''
+
+    this.userName = payload?.name || payload?.nome || ''
+    this.signature = payload?.id_signature || ''
+    this.$emit('update-signature', this.signature) // <-- Emite para o pai
 
     try {
-
-      const response = await axios.get(`http://127.0.0.1:8000/api/users/${userId}`)
+      const response = await axios.get(`http://127.0.0.1:8000/api/users/${payload?.sub}`)
       this.roles = response.data.roles || []
     } catch (error) {
       console.error('Erro ao buscar permissões:', error)
