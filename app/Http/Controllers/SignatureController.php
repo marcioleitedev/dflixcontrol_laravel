@@ -10,6 +10,7 @@ use App\Mail\WelcomeMail;
 use App\Mail\ForgotMail;
 use App\Models\Payment;
 use App\Models\UserRoler;
+use App\Models\Company;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -62,7 +63,7 @@ class SignatureController extends Controller
                 return response()->json(['message' => 'Erro ao atribuir roles ao usuário'], 500);
             }
 
-            // creeate payment
+            // creete payment
             $payloadPayment = [
                 'signature_id' => $signature->id,
                 'value' => 0,
@@ -72,6 +73,26 @@ class SignatureController extends Controller
                 'limit_date' => now()->addDays(30),
             ];
             Payment::create($payloadPayment);
+
+            // create company primary
+
+            $payloadCompany = [
+                'name' => $request['company_name'],
+                'cep' => $request['cep'],
+                'address' => $request['address'],
+                'number' => $request['number'],
+                'complement' => $request['complement'],
+                'district' => $request['district'],
+                'city' => $request['city'],
+                'state' => $request['state'],
+                'phone' => $request['phone'],
+                'email' => $request['email'],
+                // 'cnpj' => $request['cnpj'] ?? '',
+                'signature_id' => $signature->id,
+            ];
+
+            Company::insert($payloadCompany);
+
             Mail::to($request['email'])->send(new WelcomeMail($payloadUser['name'], $request['email'], $password));
             return response()->json(['message' => 'Assinatura criada com sucesso'], 201);
         } else {

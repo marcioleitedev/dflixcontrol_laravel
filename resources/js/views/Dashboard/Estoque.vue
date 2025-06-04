@@ -1,0 +1,3 @@
+<template>
+    Estoque
+</template>

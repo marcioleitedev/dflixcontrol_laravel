@@ -15,6 +15,8 @@ import Rolers from '../views/Dashboard/Rolers.vue'
 import PerfilAffiliate from '../views/Dashboard/PerfilAffiliate.vue'
 import Clientes from '../views/Dashboard/Clientes.vue'
 import Assinatura from '../views/Dashboard/Assinatura.vue'
+import Estoque from '../views/Dashboard/Estoque.vue'
+import Empresas from '../views/Dashboard/Empresas.vue'
 
 const routes = [
     { path: '/', component: Home },
@@ -31,6 +33,8 @@ const routes = [
     { path: '/dashboard/perfil-afiliado', component: PerfilAffiliate, meta: { requiresAuth: true } },
     { path: '/dashboard/clientes', component: Clientes, meta: { requiresAuth: true } },
     { path: '/dashboard/assinatura', component: Assinatura, meta: { requiresAuth: true } },
+    { path: '/dashboard/estoque', component: Estoque, meta: { requiresAuth: true } },
+    { path: '/dashboard/empresas', component: Empresas, meta: { requiresAuth: true } },
 ]
 
 const router = createRouter({
