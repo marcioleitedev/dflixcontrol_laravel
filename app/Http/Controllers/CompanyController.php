@@ -28,7 +28,11 @@ class CompanyController extends Controller
      */
     public function show(string $id)
     {
-        $empresa = Company::find($id);
+        $empresa = Company::where('signature_id', $id)->get();
+        if (!$empresa) {
+            return response()->json(['message' => 'Empresa não encontrada'], 404);
+        }
+        return response()->json($empresa);
     }
 
     /**

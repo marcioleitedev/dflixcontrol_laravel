@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\PerfilAffiliateController;
 use App\Http\Controllers\PlansController;
 use App\Http\Controllers\RolerController;
@@ -43,4 +44,10 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/profile/{id}', [PerfilAffiliateController::class, 'show']);
     Route::post('/profile', [PerfilAffiliateController::class, 'store']);
     Route::get('/profile', [PerfilAffiliateController::class, 'index']);
+
+    // Company
+    Route::get('/company', [CompanyController::class, 'index']);
+    Route::put('/company/{id}', [CompanyController::class, 'update']);
+    Route::get('/company/{id}', [CompanyController::class, 'show']);
+    Route::post('/company', [CompanyController::class, 'store']);
 });

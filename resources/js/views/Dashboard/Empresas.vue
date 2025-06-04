@@ -1,57 +1,50 @@
 <template>
   <div class="d-flex" id="wrapper">
-    <MenuDashboard />
+    <MenuDashboard @update-signature="setSignature" />
 
     <div class="container-fluid mt-4">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>Empresas</h1>
+        <h1>Empresas da Assinatura {{ signature || '—' }}</h1>
         <button class="btn btn-primary" @click="abrirCadastro">Cadastrar Empresa</button>
       </div>
 
-      <!-- Flash message -->
-      <FlashMessage ref="flashRef" />
-
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Afiliado</th>
-            <th>Email</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="assinatura in assinaturas" :key="assinatura.id">
-            <td>{{ assinatura.name }}</td>
-            <td>{{ assinatura.email }}</td>
-            <td>
-              <button class="btn btn-sm btn-warning me-2" @click="abrirEdicao(assinatura)">Editar</button>
-              <button class="btn btn-sm btn-danger" @click="excluirAfiliado(assinatura.id)">Excluir</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <nav>
-        <ul class="pagination">
-          <li class="page-item" :class="{ disabled: !pagination.prev_page_url }">
-            <button class="page-link" @click="fetchAssinaturas(pagination.current_page - 1)">Anterior</button>
-          </li>
-          <li v-for="link in pagination.links" :key="link.label" class="page-item" :class="{ active: link.active, disabled: !link.url }">
-            <button class="page-link" v-html="link.label" @click="link.url && goToPage(link.url)"></button>
-          </li>
-          <li class="page-item" :class="{ disabled: !pagination.next_page_url }">
-            <button class="page-link" @click="fetchAssinaturas(pagination.current_page + 1)">Próximo</button>
-          </li>
-        </ul>
-      </nav>
+      <!-- Lista de empresas -->
+      <div v-if="empresas.length">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Email</th>
+              <th>Cidade</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="empresa in empresas" :key="empresa.id">
+              <td>{{ empresa.name }}</td>
+              <td>{{ empresa.email }}</td>
+              <td>{{ empresa.city }} - {{ empresa.state }}</td>
+              <td>
+                <button class="btn btn-sm btn-warning" @click="abrirEdicao(empresa)">Editar</button>
+                <button class="btn btn-sm btn-danger" @click="excluirEmpresa(empresa.id)">Excluir</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div v-else>
+        <p>Nenhuma empresa cadastrada para esta assinatura.</p>
+      </div>
     </div>
 
-    <ModalAfiliado
+    <!-- Modal de empresa -->
+    <ModalEmpresa
       v-if="mostrarModal"
+      :empresa="empresaSelecionada"
       :modo="modoModal"
-      :afiliado="afiliadoSelecionado"
+      :signature="signature"
       @fechar="fecharModal"
-      @atualizar="onAtualizarAfiliado"
+      @atualizar="fetchEmpresas"
     />
   </div>
 </template>
@@ -59,23 +52,21 @@
 <script>
 import axios from 'axios'
 import MenuDashboard from '@/components/MenuDashboard.vue'
-import ModalAfiliado from '@/components/ModalAfiliado.vue'
-import FlashMessage from '@/components/FlashMessage.vue'
+import ModalEmpresa from '@/components/ModalEmpresa.vue'
 
 export default {
-  name: 'Dashboard',
+  name: 'DashboardEmpresas',
   components: {
     MenuDashboard,
-    ModalAfiliado,
-    FlashMessage,
+    ModalEmpresa,
   },
   data() {
     return {
-      assinaturas: [],
-      pagination: {},
+      signature: '',
+      empresas: [],
       mostrarModal: false,
-      modoModal: 'criar', // ou 'editar'
-      afiliadoSelecionado: null,
+      modoModal: 'criar',
+      empresaSelecionada: null,
     }
   },
   mounted() {
@@ -84,66 +75,43 @@ export default {
       this.$router.push('/login')
     } else {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-      this.fetchAssinaturas()
     }
   },
   methods: {
-    async fetchAssinaturas(page = 1) {
+    setSignature(sig) {
+      this.signature = sig
+      this.fetchEmpresas()
+    },
+    async fetchEmpresas() {
+      if (!this.signature) return
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/affiliate?page=${page}`)
-        this.assinaturas = response.data.data
-        this.pagination = {
-          current_page: response.data.current_page,
-          next_page_url: response.data.next_page_url,
-          prev_page_url: response.data.prev_page_url,
-          links: response.data.links,
-        }
+        const response = await axios.get(`http://127.0.0.1:8000/api/company/${this.signature}`)
+        this.empresas = Array.isArray(response.data) ? response.data : []
       } catch (error) {
-        console.error('Erro ao buscar afiliados:', error)
-        this.$refs.flashRef.mostrar('Erro ao buscar afiliados.', 'danger')
+        console.error('Erro ao buscar empresas:', error)
+        this.empresas = []
       }
     },
-    goToPage(url) {
-      const urlObj = new URL(url)
-      const page = urlObj.searchParams.get('page')
-      this.fetchAssinaturas(page)
-    },
     abrirCadastro() {
-      this.afiliadoSelecionado = null
+      this.empresaSelecionada = null
       this.modoModal = 'criar'
       this.mostrarModal = true
     },
-    abrirEdicao(afiliado) {
-      this.afiliadoSelecionado = { ...afiliado }
+    abrirEdicao(empresa) {
+      this.empresaSelecionada = { ...empresa }
       this.modoModal = 'editar'
       this.mostrarModal = true
     },
     fecharModal() {
       this.mostrarModal = false
-      document.body.style.overflow = ''
-      document.querySelectorAll('.modal-backdrop').forEach(el => el.remove())
-      document.body.classList.remove('modal-open')
     },
-    async excluirAfiliado(id) {
-      if (confirm('Deseja realmente excluir este afiliado?')) {
-        try {
-          await axios.delete(`http://127.0.0.1:8000/api/affiliate/${id}`)
-          this.fetchAssinaturas()
-         
-          this.$refs.flashRef.showMessage('Afiliado excluído com sucesso!', 'success')
-        } catch (error) {
-          console.error('Erro ao excluir afiliado:', error)
-          this.$refs.flashRef.showMessage('Erro ao excluir afiliado.', 'danger')
-        }
-      }
-    },
-    onAtualizarAfiliado(acao) {
-      this.fetchAssinaturas()
-      this.fecharModal()
-      if (acao === 'criado') {
-        this.$refs.flashRef.showMessage('Afiliado cadastrado com sucesso!', 'success')
-      } else if (acao === 'editado') {
-        this.$refs.flashRef.showMessage('Afiliado atualizado com sucesso!', 'success')
+    async excluirEmpresa(id) {
+      if (!confirm('Deseja realmente excluir esta empresa?')) return
+      try {
+        await axios.delete(`http://127.0.0.1:8000/api/company/${id}`)
+        this.fetchEmpresas()
+      } catch (error) {
+        console.error('Erro ao excluir empresa:', error)
       }
     },
   },
