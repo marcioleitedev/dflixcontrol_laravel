@@ -21,6 +21,7 @@ class Company extends Model
         'state',
         'phone',
         'email',
-        'plan_id',
+        'signature_id',
+        'cnpj',
     ];
 }

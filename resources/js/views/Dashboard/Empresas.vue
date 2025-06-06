@@ -3,8 +3,11 @@
     <MenuDashboard @update-signature="setSignature" />
 
     <div class="container-fluid mt-4">
+      <!-- Flash message -->
+      <FlashMessage ref="flash" />
+
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>Empresas da Assinatura {{ signature || '—' }}</h1>
+        <h1><i class="bi bi-building"></i> Empresas </h1>
         <button class="btn btn-primary" @click="abrirCadastro">Cadastrar Empresa</button>
       </div>
 
@@ -14,7 +17,9 @@
           <thead>
             <tr>
               <th>Nome</th>
+              <th>CNPJ</th>
               <th>Email</th>
+              <th>Telefone</th>
               <th>Cidade</th>
               <th>Ações</th>
             </tr>
@@ -22,7 +27,9 @@
           <tbody>
             <tr v-for="empresa in empresas" :key="empresa.id">
               <td>{{ empresa.name }}</td>
+              <td>{{ empresa.cnpj }}</td>
               <td>{{ empresa.email }}</td>
+              <td>{{ empresa.phone }}</td>
               <td>{{ empresa.city }} - {{ empresa.state }}</td>
               <td>
                 <button class="btn btn-sm btn-warning" @click="abrirEdicao(empresa)">Editar</button>
@@ -45,6 +52,7 @@
       :signature="signature"
       @fechar="fecharModal"
       @atualizar="fetchEmpresas"
+      @mensagem="mostrarMensagem"
     />
   </div>
 </template>
@@ -53,12 +61,14 @@
 import axios from 'axios'
 import MenuDashboard from '@/components/MenuDashboard.vue'
 import ModalEmpresa from '@/components/ModalEmpresa.vue'
+import FlashMessage from '@/components/FlashMessage.vue'
 
 export default {
   name: 'DashboardEmpresas',
   components: {
     MenuDashboard,
     ModalEmpresa,
+    FlashMessage,
   },
   data() {
     return {
@@ -90,6 +100,7 @@ export default {
       } catch (error) {
         console.error('Erro ao buscar empresas:', error)
         this.empresas = []
+        this.mostrarMensagem({ texto: 'Erro ao buscar empresas.', tipo: 'error' })
       }
     },
     abrirCadastro() {
@@ -110,11 +121,18 @@ export default {
       try {
         await axios.delete(`http://127.0.0.1:8000/api/company/${id}`)
         this.fetchEmpresas()
+        this.mostrarMensagem({ texto: 'Empresa excluída com sucesso!', tipo: 'success' })
       } catch (error) {
         console.error('Erro ao excluir empresa:', error)
+        this.mostrarMensagem({ texto: 'Erro ao excluir empresa.', tipo: 'error' })
       }
     },
-  },
+    mostrarMensagem({ texto, tipo = 'success', duracao = 3000 }) {
+      if (this.$refs.flash && this.$refs.flash.showMessage) {
+        this.$refs.flash.showMessage(texto, tipo, duracao)
+      }
+    }
+  }
 }
 </script>
 

@@ -126,7 +126,6 @@ export default {
   },
   methods: {
 
-
     async criarPerfil() {
       try {
         const token = localStorage.getItem('token')
