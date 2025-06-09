@@ -74,7 +74,8 @@ export default {
     this.$emit('update-signature', this.signature) // <-- Emite para o pai
 
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/users/${payload?.sub}`)
+      const baseURL = import.meta.env.VITE_API_URL
+      const response = await axios.get(`${baseURL}/users/${payload?.sub}`)
       this.roles = response.data.roles || []
     } catch (error) {
       console.error('Erro ao buscar permissões:', error)

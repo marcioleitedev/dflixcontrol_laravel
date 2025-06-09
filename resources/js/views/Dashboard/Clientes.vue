@@ -107,8 +107,9 @@ export default {
       }
     },
     async fetchPerfil() {
+      const baseURL = import.meta.env.VITE_API_URL
   try {
-    const res = await axios.get(`http://localhost:8000/api/signature/${this.userId}`)
+    const res = await axios.get(`${baseURL}/signature/${this.userId}`)
     this.perfis = res.data.data 
   } catch (err) {
     console.error(err)
@@ -134,9 +135,9 @@ export default {
     },
     async excluirPerfil(id) {
       if (!confirm('Deseja realmente excluir este perfil?')) return
-
+      const baseURL = import.meta.env.VITE_API_URL
       try {
-        await axios.delete(`http://127.0.0.1:8000/api/signature/${id}`)
+        await axios.delete(`${baseURL}/signature/${id}`)
         this.$refs.flashRef.showMessage('Perfil excluído com sucesso.', 'success')
         this.fetchPerfil()
       } catch (err) {

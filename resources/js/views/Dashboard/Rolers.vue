@@ -92,8 +92,9 @@ export default {
   },
   methods: {
     async fetchRoles(page = 1) {
+      const baseURL = import.meta.env.VITE_API_URL
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/roles?page=${page}`)
+        const response = await axios.get(`${baseURL}/roles?page=${page}`)
         this.roles = response.data.data
         this.pagination = {
           current_page: response.data.current_page,
@@ -129,8 +130,9 @@ export default {
     },
     async excluirRole(id) {
       if (confirm('Deseja realmente excluir este role?')) {
+        const baseURL = import.meta.env.VITE_API_URL
         try {
-          await axios.delete(`http://127.0.0.1:8000/api/roles/${id}`)
+          await axios.delete(`${baseURL}/roles/${id}`)
           this.fetchRoles()
           this.$refs.flashRef.showMessage('Role excluído com sucesso!', 'success')
         } catch (error) {

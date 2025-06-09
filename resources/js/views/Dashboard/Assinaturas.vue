@@ -91,8 +91,9 @@ export default {
   },
   methods: {
     async fetchAssinaturas(page = 1) {
+      const baseURL = import.meta.env.VITE_API_URL
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/signature?page=${page}`)
+        const response = await axios.get(`${baseURL}/signature?page=${page}`)
         this.assinaturas = response.data.data
         this.pagination = {
           current_page: response.data.current_page,

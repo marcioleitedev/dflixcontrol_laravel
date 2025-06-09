@@ -75,11 +75,12 @@ export default {
   methods: {
     async salvar() {
       try {
-        if (this.modo === 'criar') {
-          await axios.post('http://127.0.0.1:8000/api/roles', this.form)
+        const baseURL = import.meta.env.VITE_API_URL
+        if (this.modo === 'criar') {    
+          await axios.post(`${baseURL}/roles`, this.form)
           this.$emit('atualizar', 'criado')
         } else {
-          await axios.put(`http://127.0.0.1:8000/api/roles/${this.role.id}`, this.form)
+          await axios.put(`${baseURL}/roles/${this.role.id}`, this.form)
           this.$emit('atualizar', 'editado')
         }
       } catch (error) {

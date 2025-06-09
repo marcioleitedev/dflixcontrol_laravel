@@ -128,8 +128,9 @@ export default {
 
     async criarPerfil() {
       try {
+        const baseURL = import.meta.env.VITE_API_URL
         const token = localStorage.getItem('token')
-        await axios.post('http://127.0.0.1:8000/api/signature', this.perfil, {
+        await axios.post(`${baseURL}/signature`, this.perfil, {
           headers: { Authorization: `Bearer ${token}` }
         })
         this.$emit('atualizar')
@@ -140,8 +141,9 @@ export default {
     },
     async atualizarPerfil() {
       try {
+        const baseURL = import.meta.env.VITE_API_URL
         const token = localStorage.getItem('token')
-        await axios.put(`http://127.0.0.1:8000/api/profile/${this.perfil.id}`, this.perfil, {
+        await axios.put(`${baseURL}/profile/${this.perfil.id}`, this.perfil, {
           headers: { Authorization: `Bearer ${token}` }
         })
         this.$emit('atualizar')

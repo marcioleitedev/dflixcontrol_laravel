@@ -65,8 +65,9 @@
       },
       async fetchEstoque() {
         if (!this.signature) return
+        const baseURL = import.meta.env.VITE_API_URL
         try {
-          const response = await axios.get(`http://127.0.0.1:8000/api/company/${this.signature}`)
+          const response = await axios.get(`${baseURL}/company/${this.signature}`)
           this.estoque = Array.isArray(response.data) ? response.data : []
         } catch (error) {
           console.error('Erro ao buscar estoque:', error)
@@ -89,8 +90,9 @@
       },
       async excluirEstoque(id) {
         if (!confirm('Deseja realmente excluir esta estoque?')) return
+        const baseURL = import.meta.env.VITE_API_URL
         try {
-          await axios.delete(`http://127.0.0.1:8000/api/company/${id}`)
+          await axios.delete(`${baseURL}/company/${id}`)
           this.fetchEstoque()
           this.mostrarMensagem({ texto: 'estoque excluída com sucesso!', tipo: 'success' })
         } catch (error) {

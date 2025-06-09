@@ -147,9 +147,10 @@ export default {
 
 async salvarEmpresa() {
   try {
+    const baseURL = import.meta.env.VITE_API_URL
     const response = this.modo === 'criar'
-      ? await axios.post('http://127.0.0.1:8000/api/company', this.empresaData)
-      : await axios.put(`http://127.0.0.1:8000/api/company/${this.empresaData.id}`, this.empresaData)
+      ? await axios.post(`${baseURL}/company`, this.empresaData)
+      : await axios.put(`${baseURL}/company/${this.empresaData.id}`, this.empresaData)
 
     this.$emit('mensagem', { tipo: 'success', texto: response.data.message })
     this.$emit('atualizar')

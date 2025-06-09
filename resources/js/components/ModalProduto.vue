@@ -67,7 +67,8 @@
       },
       async salvar() {
         try {
-          await axios.post('http://127.0.0.1:8000/api/products', this.form)
+          const baseURL = import.meta.env.VITE_API_URL
+          await axios.post(`${baseURL}/products`, this.form)
           this.$emit('salvo')
           this.$emit('close')
         } catch (error) {

@@ -89,8 +89,9 @@ export default {
     },
     async fetchCategorias() {
       if (!this.signature) return
+      const baseURL = import.meta.env.VITE_API_URL
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/category/${this.signature}`)
+          const response = await axios.get(`${baseURL}/category/${this.signature}`)
         this.categorias = Array.isArray(response.data) ? response.data : []
       } catch (error) {
         console.error('Erro ao buscar categorias:', error)
@@ -113,8 +114,9 @@ export default {
     },
     async excluirCategoria(id) {
       if (!confirm('Deseja realmente excluir esta categoria?')) return
+      const baseURL = import.meta.env.VITE_API_URL
       try {
-        await axios.delete(`http://127.0.0.1:8000/api/category/${id}`)
+        await axios.delete(`${baseURL}/category/${id}`)
         this.fetchCategorias()
         this.mostrarMensagem({ texto: 'Categoria excluída com sucesso!', tipo: 'success' })
       } catch (error) {

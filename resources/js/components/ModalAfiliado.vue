@@ -66,10 +66,13 @@ export default {
   methods: {
     async salvar() {
       try {
+       
         if (this.modo === 'criar') {
-          await axios.post('http://127.0.0.1:8000/api/affiliate', this.form)
+          const baseURL = import.meta.env.VITE_API_URL
+          await axios.post(`${baseURL}/affiliate`, this.form)
         } else if (this.afiliado?.id) {
-          await axios.put(`http://127.0.0.1:8000/api/affiliate/${this.afiliado.id}`, this.form)
+          const baseURL = import.meta.env.VITE_API_URL
+          await axios.put(`${baseURL}/affiliate/${this.afiliado.id}`, this.form)
         }
         this.$emit('fechar')
         this.$emit('atualizar')

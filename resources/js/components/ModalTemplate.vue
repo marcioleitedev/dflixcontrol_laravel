@@ -74,10 +74,11 @@
     },
     methods: {
       async salvar() {
+        const baseURL = import.meta.env.VITE_API_URL
         const endpoint =
           this.modoModal === 'criar'
-            ? `http://127.0.0.1:8000/api/company/${this.signature}`
-            : `http://127.0.0.1:8000/api/company/${this.estoque.id}`
+            ? `${baseURL}/company/${this.signature}`
+            : `${BASEurl}/company/${this.estoque.id}`
   
         const metodo = this.modoModal === 'criar' ? 'post' : 'put'
   

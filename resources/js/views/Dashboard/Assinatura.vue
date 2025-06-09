@@ -60,8 +60,9 @@ export default {
     },
     async fetchAssinatura() {
       if (!this.signature) return
+      const baseURL = import.meta.env.VITE_API_URL
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/signature/${this.signature}`)
+        const response = await axios.get(`${baseURL}/signature/${this.signature}`)
         this.assinatura = response.data
       } catch (error) {
         console.error('Erro ao buscar a assinatura:', error)

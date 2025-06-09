@@ -94,8 +94,9 @@ export default {
     },
     async fetchEmpresas() {
       if (!this.signature) return
+      const baseURL = import.meta.env.VITE_API_URL
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/company/${this.signature}`)
+        const response = await axios.get(`${baseURL}/company/${this.signature}`)
         this.empresas = Array.isArray(response.data) ? response.data : []
       } catch (error) {
         console.error('Erro ao buscar empresas:', error)
@@ -118,8 +119,9 @@ export default {
     },
     async excluirEmpresa(id) {
       if (!confirm('Deseja realmente excluir esta empresa?')) return
+      const baseURL = import.meta.env.VITE_API_URL
       try {
-        await axios.delete(`http://127.0.0.1:8000/api/company/${id}`)
+        await axios.delete(`${baseURL}/company/${id}`)
         this.fetchEmpresas()
         this.mostrarMensagem({ texto: 'Empresa excluída com sucesso!', tipo: 'success' })
       } catch (error) {

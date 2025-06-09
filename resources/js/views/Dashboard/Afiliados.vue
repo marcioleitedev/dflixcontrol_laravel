@@ -90,7 +90,8 @@ export default {
   methods: {
     async fetchAssinaturas(page = 1) {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/affiliate?page=${page}`)
+        const baseURL = import.meta.env.VITE_API_URL
+        const response = await axios.get(`${baseURL}/affiliate?page=${page}`)
         this.assinaturas = response.data.data
         this.pagination = {
           current_page: response.data.current_page,
@@ -126,8 +127,10 @@ export default {
     },
     async excluirAfiliado(id) {
       if (confirm('Deseja realmente excluir este afiliado?')) {
+        const baseURL = import.meta.env.VITE_API_URL
         try {
-          await axios.delete(`http://127.0.0.1:8000/api/affiliate/${id}`)
+          
+          await axios.delete(`${baseURL}/affiliate/${id}`)
           this.fetchAssinaturas()
          
           this.$refs.flashRef.showMessage('Afiliado excluído com sucesso!', 'success')

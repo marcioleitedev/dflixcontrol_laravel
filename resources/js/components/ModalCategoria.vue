@@ -141,24 +141,28 @@ export default {
   methods: {
     async carregarEmpresas() {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/company/${this.signature}`)
-        this.empresas = Array.isArray(response.data) ? response.data : [response.data]
+        const baseURL = import.meta.env.VITE_API_URL
+        const responser = await axios.get(`${baseURL}/company/${this.signature}`)
+        this.empresas = Array.isArray(responser.data) ? responser.data : [responser.data]
+        console.log('Empresas carregadas:',  this.empresas)
       } catch (error) {
         console.error('Erro ao carregar empresas:', error)
       }
     },
     async carregarCategorias() {
   try {
-    const response = await axios.get(`http://127.0.0.1:8000/api/category/${this.signature}`)
+    const baseURL = import.meta.env.VITE_API_URL
+    const response = await axios.get(`${baseURL}/category/${this.signature}`)
     this.categorias = Array.isArray(response.data) ? response.data : [response.data]
   } catch (error) {
     console.error('Erro ao carregar categorias pais:', error)
   }
 },
     async salvar() {
+      const baseURL = import.meta.env.VITE_API_URL
       const endpoint = this.modoModal === 'criar'
-        ? `http://127.0.0.1:8000/api/category/`
-        : `http://127.0.0.1:8000/api/category/${this.estoque.id}`
+        ? `${baseURL}/category/`
+        : `${baseURL}/category/${this.estoque.id}`
 
       const metodo = this.modoModal === 'criar' ? 'post' : 'put'
 

@@ -83,7 +83,8 @@ const planoData = ref(null)
 
 const fetchPlano = async () => {
   try {
-    const response = await axios.get(`/api/plans/${planoId}`)
+    const baseURL = import.meta.env.VITE_API_URL
+    const response = await axios.get(`${baseURL}/plans/${planoId}`)
     planoData.value = response.data
   } catch (error) {
     console.error('Erro ao buscar plano:', error)
@@ -95,9 +96,9 @@ const assinar = async () => {
     flashRef.value.showMessage('CPF inválido. Verifique e tente novamente.', 'error')
     return
   }
-
+  const baseURL = import.meta.env.VITE_API_URL
   try {
-    const response = await axios.post('/api/signature', {
+    const response = await axios.post(`${baseURL}/signature`, {
       name: name.value,
       email: email.value,
       cpf: cpf.value,

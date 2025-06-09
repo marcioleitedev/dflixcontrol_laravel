@@ -85,7 +85,8 @@ const router = useRouter()
 
 onMounted(async () => {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/plans')
+    const baseURL = import.meta.env.VITE_API_URL
+    const response = await axios.get(`${baseURL}/plans`)
     plans.value = response.data
   } catch (error) {
     console.error('Erro ao buscar planos:', error)

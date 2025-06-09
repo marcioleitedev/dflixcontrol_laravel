@@ -54,7 +54,8 @@ export default {
       this.error = ''
 
       try {
-        const response = await axios.post('/api/forgot', this.form)
+        const baseURL = import.meta.env.VITE_API_URL
+        const response = await axios.post(`${baseURL}/forgot`, this.form)
         this.error = 'Verifique seu e-mail para redefinir sua senha'
         this.$router.push('/login')
       } catch (err) {

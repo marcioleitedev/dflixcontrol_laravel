@@ -61,8 +61,9 @@
         }
       },
       async fetchCategorias() {
+        const baseURL = import.meta.env.VITE_API_URL
         try {
-          const res = await axios.get('http://127.0.0.1:8000/api/categories')
+          const res = await axios.get(`${baseURL}/category`)
           this.categorias = res.data
         } catch (e) {
           console.error('Erro ao buscar categorias', e)
