@@ -25,6 +25,7 @@
   <script>
   import MenuDashboard from '@/components/MenuDashboard.vue'
   import FlashMessage from '@/components/FlashMessage.vue'
+  import ModalProduto from '@/components/ModalProduto.vue'
 
   import axios from 'axios'
   
@@ -32,7 +33,7 @@
     components: {
       MenuDashboard,
       FlashMessage,
-
+      ModalProduto
     },
     data() {
       return {
@@ -63,7 +64,7 @@
       async fetchCategorias() {
         const baseURL = import.meta.env.VITE_API_URL
         try {
-          const res = await axios.get(`${baseURL}/category`)
+          const res = await axios.get(`${baseURL}/products/${this.signature}`)
           this.categorias = res.data
         } catch (e) {
           console.error('Erro ao buscar categorias', e)

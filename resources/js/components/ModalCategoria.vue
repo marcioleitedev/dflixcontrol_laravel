@@ -5,26 +5,18 @@
         <form @submit.prevent="salvar">
           <div class="modal-header">
             <h5 class="modal-title">
-              {{ modoModal === 'criar' ? 'Cadastrar Categoria' : 'Editar Categoria' }} {{ signature }}
+              {{ modoModal === 'criar' ? 'Cadastrar Categoria' : 'Editar Categoria' }}
             </h5>
             <button type="button" class="btn-close" @click="$emit('fechar')" aria-label="Fechar"></button>
           </div>
+
           <div class="modal-body">
             <!-- Empresa -->
             <div class="mb-3">
               <label for="id_company" class="form-label">Empresa</label>
-              <select
-                id="id_company"
-                class="form-select"
-                v-model="form.id_company"
-                required
-              >
+              <select id="id_company" class="form-select" v-model="form.id_company" required>
                 <option disabled value="">Selecione uma empresa</option>
-                <option
-                  v-for="empresa in empresas"
-                  :key="empresa.id"
-                  :value="empresa.id"
-                >
+                <option v-for="empresa in empresas" :key="empresa.id" :value="empresa.id">
                   {{ empresa.name }}
                 </option>
               </select>
@@ -33,43 +25,24 @@
             <!-- Categoria Pai -->
             <div class="mb-3">
               <label for="parent_id" class="form-label">Categoria Pai (ID)</label>
-              <select
-  id="parent_id"
-  class="form-select"
-  v-model="form.parent_id"
->
-  <option disabled value="">Selecione uma categoria pai (opcional)</option>
-  <option
-    v-for="categoria in categorias"
-    :key="categoria.id"
-    :value="categoria.id"
-  >
-    {{ categoria.name }}
-  </option>
-</select>
-
+              <select id="parent_id" class="form-select" v-model="form.parent_id">
+                <option disabled value="">Selecione uma categoria pai (opcional)</option>
+                <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
+                  {{ categoria.name }}
+                </option>
+              </select>
             </div>
 
             <!-- Nome da Categoria -->
             <div class="mb-3">
               <label for="name" class="form-label">Nome da Categoria</label>
-              <input
-                type="text"
-                id="name"
-                class="form-control"
-                v-model="form.name"
-                required
-              />
+              <input type="text" id="name" class="form-control" v-model="form.name" required />
             </div>
 
             <!-- Descrição -->
             <div class="mb-3">
               <label for="description" class="form-label">Descrição</label>
-              <textarea
-                id="description"
-                class="form-control"
-                v-model="form.description"
-              ></textarea>
+              <textarea id="description" class="form-control" v-model="form.description"></textarea>
             </div>
           </div>
 
@@ -95,7 +68,10 @@ export default {
     mostrar: Boolean,
     modoModal: String,
     estoque: Object,
-    signature: String
+    signature: {
+      type: String,
+      required: true
+    }
   },
   data() {
     return {
@@ -103,18 +79,21 @@ export default {
         name: '',
         description: '',
         parent_id: '',
-        id_signature: this.signature,
+        id_signature: '',
         id_company: ''
       },
       empresas: [],
       categorias: []
     }
   },
-  mounted() {
-    this.carregarEmpresas()
-    this.carregarCategorias()
-  },
   watch: {
+    mostrar(novoValor) {
+      if (novoValor && this.signature) {
+        this.form.id_signature = this.signature
+        this.carregarEmpresas()
+        this.carregarCategorias()
+      }
+    },
     estoque: {
       immediate: true,
       handler(novo) {
@@ -140,46 +119,46 @@ export default {
   },
   methods: {
     async carregarEmpresas() {
+      if (!this.signature) return
       try {
         const baseURL = import.meta.env.VITE_API_URL
-        const responser = await axios.get(`${baseURL}/company/${this.signature}`)
-        this.empresas = Array.isArray(responser.data) ? responser.data : [responser.data]
-        console.log('Empresas carregadas:',  this.empresas)
+        const response = await axios.get(`${baseURL}/company/${this.signature}`)
+        this.empresas = Array.isArray(response.data) ? response.data : [response.data]
       } catch (error) {
         console.error('Erro ao carregar empresas:', error)
       }
     },
-  async carregarCategorias() {
-  try {
-    const baseURL = import.meta.env.VITE_API_URL
-    const response = await axios.get(`${baseURL}/category/${this.signature}`)
-    this.categorias = Array.isArray(response.data) ? response.data : [response.data]
-  } catch (error) {
-    console.error('Erro ao carregar categorias pais:', error)
-  }
-},
+    async carregarCategorias() {
+      if (!this.signature) return
+      try {
+        const baseURL = import.meta.env.VITE_API_URL
+        const response = await axios.get(`${baseURL}/category/${this.signature}`)
+        this.categorias = Array.isArray(response.data) ? response.data : [response.data]
+      } catch (error) {
+        console.error('Erro ao carregar categorias pais:', error)
+      }
+    },
     async salvar() {
       const baseURL = import.meta.env.VITE_API_URL
       const endpoint = this.modoModal === 'criar'
         ? `${baseURL}/category/`
         : `${baseURL}/category/${this.estoque.id}`
-
       const metodo = this.modoModal === 'criar' ? 'post' : 'put'
 
       try {
         await axios[metodo](endpoint, this.form)
         this.$emit('salvou')
         this.$emit('mensagem', {
-    texto: this.modoModal === 'criar' ? 'Categoria criada com sucesso!' : 'Categoria atualizada com sucesso!',
-    tipo: 'success'
-  })
+          texto: this.modoModal === 'criar' ? 'Categoria criada com sucesso!' : 'Categoria atualizada com sucesso!',
+          tipo: 'success'
+        })
         this.$emit('fechar')
       } catch (error) {
         console.error('Erro ao salvar:', error)
         this.$emit('mensagem', {
-    texto: 'Erro ao salvar a categoria.',
-    tipo: 'error'
-  })
+          texto: 'Erro ao salvar a categoria.',
+          tipo: 'error'
+        })
       }
     }
   }

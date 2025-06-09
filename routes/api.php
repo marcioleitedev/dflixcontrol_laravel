@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\PerfilAffiliateController;
 use App\Http\Controllers\PlansController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RolerController;
 use App\Http\Controllers\SignatureController;
 use App\Http\Controllers\UserController;
@@ -59,4 +60,11 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/category', [CategoryController::class, 'store']);
     Route::put('/category/{id}', [CategoryController::class, 'update']);
     Route::delete('/category/{id}', [CategoryController::class, 'destroy']);
+
+    //Products
+    Route::get('/products' , [ProductController::class , 'index']);
+    Route::get('/products/{id}' , [ProductController::class , 'show']);
+    Route::post('/products' , [ProductController::class , 'store']);
+    Route::put('/productsq{id}' , [ProductController::class , 'update']);
+    Route::delete('/productsq{id}' , [ProductController::class , 'destroy']);
 });

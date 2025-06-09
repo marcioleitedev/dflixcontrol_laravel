@@ -17,6 +17,9 @@ class Product extends Model
         'quantity',
         'minimum_stock',
         'status',
+        'id_signature',
+        'id_company'
+
     ];
 
     public function category()

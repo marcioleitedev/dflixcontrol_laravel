@@ -11,9 +11,10 @@
           <button class="btn btn-primary me-2" @click="abrirCadastro">
             <i class="bi bi-folder"></i> Cadastrar Categorias
           </button>
-          <button class="btn btn-primary me-2">
+        <a href="/dashboard/estoque">  <button class="btn btn-primary me-2">
             <i class="bi bi-box-seam"></i> Produtos
           </button>
+        </a>
         </div>
       </div>
 
