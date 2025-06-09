@@ -149,7 +149,7 @@ export default {
         console.error('Erro ao carregar empresas:', error)
       }
     },
-    async carregarCategorias() {
+  async carregarCategorias() {
   try {
     const baseURL = import.meta.env.VITE_API_URL
     const response = await axios.get(`${baseURL}/category/${this.signature}`)
