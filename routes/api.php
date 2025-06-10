@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PerfilAffiliateController;
 use App\Http\Controllers\PlansController;
 use App\Http\Controllers\ProductController;
@@ -63,16 +64,23 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/category/{id}', [CategoryController::class, 'destroy']);
 
     //Products
-    Route::get('/products' , [ProductController::class , 'index']);
-    Route::get('/products/{id}' , [ProductController::class , 'show']);
-    Route::post('/products' , [ProductController::class , 'store']);
-    Route::put('/products/{id}' , [ProductController::class , 'update']);
-    Route::delete('/products/{id}' , [ProductController::class , 'destroy']);
+    Route::get('/products', [ProductController::class, 'index']);
+    Route::get('/products/{id}', [ProductController::class, 'show']);
+    Route::post('/products', [ProductController::class, 'store']);
+    Route::put('/products/{id}', [ProductController::class, 'update']);
+    Route::delete('/products/{id}', [ProductController::class, 'destroy']);
 
     // Suppliers Fornecedores
-    Route::get('/fornecedores' , [SupplierController::class , 'index']);
-    Route::get('/fornecedores/{id}' , [SupplierController::class , 'show']);
-    Route::post('/fornecedores' , [SupplierController::class , 'store']);
-    Route::put('/fornecedores/{id}' , [SupplierController::class , 'update']);
-    Route::delete('/fornecedores/{id}' , [SupplierController::class , 'destroy']);
+    Route::get('/fornecedores', [SupplierController::class, 'index']);
+    Route::get('/fornecedores/{id}', [SupplierController::class, 'show']);
+    Route::post('/fornecedores', [SupplierController::class, 'store']);
+    Route::put('/fornecedores/{id}', [SupplierController::class, 'update']);
+    Route::delete('/fornecedores/{id}', [SupplierController::class, 'destroy']);
+
+    // Empregados
+    Route::get('/empregados', [EmployeeController::class, 'index']);
+    Route::get('/empregados/{id}', [EmployeeController::class, 'show']);
+    Route::post('/empregados', [EmployeeController::class, 'store']);
+    Route::put('/empregados/{id}', [EmployeeController::class, 'update']);
+    Route::delete('/empregados/{id}', [EmployeeController::class, 'destroy']);
 });
