@@ -19,7 +19,6 @@ class Product extends Model
         'status',
         'id_signature',
         'id_company'
-
     ];
 
     public function category()

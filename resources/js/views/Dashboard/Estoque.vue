@@ -18,8 +18,48 @@
           </div>
         </div>
 
+        <div v-if="produtos.length">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Categoria</th>
+        <th>Preço</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="produto in produtos" :key="produto.id">
+        <td>{{ produto.name }}</td>
+        <td>{{ produto.category.name }}</td>
+        <td>R$ {{ produto.sale_price }}</td>
+        <td>
+          <button class="btn btn-sm btn-warning me-2" @click="editarProduto(produto)">
+            <i class="bi bi-pencil"></i> Editar
+          </button>
+          <button class="btn btn-sm btn-danger" @click="removerProduto(produto.id)">
+            <i class="bi bi-trash"></i> Remover
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div v-else>
+  <p>Nenhum produto cadastrado.</p>
+</div>
+
       </div>
+
+<ModalProduto 
+  :mostrar="mostrarProduto"
+  :categorias="categorias"
+  :signature="signature"
+  @close="mostrarProduto = false"
+  @salvo="handleProdutoSalvo"
+/>
     </div>
+
   </template>
   
   <script>
@@ -40,6 +80,7 @@
         signature: '',
         mostrarCategoria: false,
         mostrarProduto: false,
+        produtos: [],
         categorias: []
       }
     },
@@ -50,22 +91,26 @@
       } else {
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
       }
-      this.fetchCategorias()
+      this.fetchProdutos()
     },
     methods: {
       setSignature(sig) {
         this.signature = sig
       },
+      handleProdutoSalvo() {
+    this.fetchProdutos()
+    this.mostrarMensagem({ texto: 'Produto salvo com sucesso!' })
+  },
       mostrarMensagem({ texto, tipo = 'success', duracao = 3000 }) {
         if (this.$refs.flash && this.$refs.flash.showMessage) {
           this.$refs.flash.showMessage(texto, tipo, duracao)
         }
       },
-      async fetchCategorias() {
+      async fetchProdutos() {
         const baseURL = import.meta.env.VITE_API_URL
         try {
           const res = await axios.get(`${baseURL}/products/${this.signature}`)
-          this.categorias = res.data
+          this.produtos = res.data
         } catch (e) {
           console.error('Erro ao buscar categorias', e)
         }

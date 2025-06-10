@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -19,7 +20,14 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $product = new Product();
+
+        $create = $product->create($request->all());
+        if(!$create){
+            return response()->json(['message' => 'erro ao criar produto']);
+        }
+        return response()->json(['message' => 'produto criado com sucesso']);
+       
     }
 
     /**
@@ -27,7 +35,11 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $product = Product::with(['category'])->where('id_signature' , $id)->get();
+        if(!$product){
+            return response()->json(['error' => 'Produto não encontrado'], 400);
+        }
+        return response()->json($product);
     }
 
     /**
