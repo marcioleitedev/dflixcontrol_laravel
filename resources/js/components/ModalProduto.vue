@@ -9,7 +9,7 @@
         <div class="modal-body">
           <div class="mb-3">
             <label>Empresa</label>
- <!-- O restante do template permanece igual -->
+
  <select class="form-control" v-model="form.id_company">
     <option value="">Selecione uma empresas</option>
     <option v-for="empresa in empresasDisponiveis" :key="empresa.id" :value="empresa.id">{{ empresa.name }}</option>
@@ -17,7 +17,7 @@
           </div>
           <div class="mb-3">
             <label>Categoria</label>
- <!-- O restante do template permanece igual -->
+
  <select class="form-control" v-model="form.category_id">
     <option value="">Selecione uma categoria</option>
     <option v-for="cat in categoriasDisponiveis" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
@@ -69,10 +69,14 @@ export default {
       type: Array,
       default: () => []
     },
-  signature: {
-    type: String,
-    default: ''
-  }
+    produto: {
+      type: Object,
+      default: null
+    },
+    signature: {
+      type: String,
+      default: ''
+    }
   },
   emits: ['close', 'salvo'],
   data() {
@@ -89,17 +93,17 @@ export default {
       },
       categoriasCarregadas: [],
       empresasCarregadas: []
-
     }
   },
   computed: {
     categoriasDisponiveis() {
-      // Combina categorias recebidas como prop com as carregadas localmente
       return [...this.categorias, ...this.categoriasCarregadas]
     },
     empresasDisponiveis() {
-      // Combina categorias recebidas como prop com as carregadas localmente
       return [...this.empresas, ...this.empresasCarregadas]
+    },
+    tituloModal() {
+      return this.produto ? 'Editar Produto' : 'Cadastrar Produto'
     }
   },
   watch: {
@@ -107,14 +111,22 @@ export default {
       if (val) {
         this.carregarCategorias()
         this.carregarEmpresas()
-
+        
+        // Se for edição, preenche o form com os dados do produto
+        if (this.produto) {
+          this.form = {
+            ...this.produto,
+            category_id: this.produto.category?.id || '',
+            id_company: this.produto.company?.id || ''
+          }
+        }
       } else {
         this.reset()
       }
     },
     signature(newVal) {
-    this.form.id_signature = newVal;
-  },
+      this.form.id_signature = newVal
+    }
   },
   methods: {
     reset() {
@@ -132,8 +144,14 @@ export default {
     async salvar() {
       const baseURL = import.meta.env.VITE_API_URL
       try {
+        if (this.produto) {
+          // Edição
+          await axios.put(`${baseURL}/products/${this.produto.id}`, this.form)
+        } else {
+          // Criação
+          await axios.post(`${baseURL}/products`, this.form)
+        }
         
-        await axios.post(`${baseURL}/products`, this.form)
         this.$emit('salvo')
         this.$emit('close')
       } catch (error) {
@@ -141,25 +159,25 @@ export default {
       }
     },
     async carregarCategorias() {
-  if (!this.signature) return;
-  try {
-    const baseURL = import.meta.env.VITE_API_URL
-    const response = await axios.get(`${baseURL}/category/${this.signature}`)
-    this.categoriasCarregadas = Array.isArray(response.data) ? response.data : [response.data]
-  } catch (error) {
-    console.error('Erro ao carregar categorias:', error)
-  }
-},
-async carregarEmpresas() {
-  if (!this.signature) return;
-  try {
-    const baseURL = import.meta.env.VITE_API_URL
-    const response = await axios.get(`${baseURL}/company/${this.signature}`)
-    this.empresasCarregadas = Array.isArray(response.data) ? response.data : [response.data]
-  } catch (error) {
-    console.error('Erro ao carregar empresas:', error)
-  }
-},
+      if (!this.signature) return
+      try {
+        const baseURL = import.meta.env.VITE_API_URL
+        const response = await axios.get(`${baseURL}/category/${this.signature}`)
+        this.categoriasCarregadas = Array.isArray(response.data) ? response.data : [response.data]
+      } catch (error) {
+        console.error('Erro ao carregar categorias:', error)
+      }
+    },
+    async carregarEmpresas() {
+      if (!this.signature) return
+      try {
+        const baseURL = import.meta.env.VITE_API_URL
+        const response = await axios.get(`${baseURL}/company/${this.signature}`)
+        this.empresasCarregadas = Array.isArray(response.data) ? response.data : [response.data]
+      } catch (error) {
+        console.error('Erro ao carregar empresas:', error)
+      }
+    }
   }
 }
 </script>

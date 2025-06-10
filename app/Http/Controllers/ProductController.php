@@ -35,11 +35,34 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $product = Product::with(['category'])->where('id_signature' , $id)->get();
-        if(!$product){
-            return response()->json(['error' => 'Produto não encontrado'], 400);
+        $query = Product::with(['category'])
+            ->where('id_signature', $id);
+        
+        // Filtro de busca
+        if (request()->has('search') && !empty(request('search'))) {
+            $search = request('search');
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('brand', 'like', "%{$search}%")
+                  ->orWhereHas('category', function($q) use ($search) {
+                      $q->where('name', 'like', "%{$search}%");
+                  });
+            });
         }
-        return response()->json($product);
+        
+        // Paginação
+        if (request()->has('per_page')) {
+            $perPage = request('per_page');
+            $products = $query->paginate($perPage);
+        } else {
+            $products = $query->get();
+        }
+        
+        if ($products->isEmpty()) {
+            return response()->json(['error' => 'Nenhum produto encontrado'], 404);
+        }
+        
+        return response()->json($products);
     }
 
     /**
@@ -47,7 +70,19 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $product = Product::find($id);
+    
+        if(!$product) {
+            return response()->json(['message' => 'Produto não encontrado'], 404);
+        }
+        
+        $updated = $product->update($request->all());
+        
+        if($updated) {
+            return response()->json(['message' => 'Atualizado com sucesso'], 200);
+        }
+        
+        return response()->json(['message' => 'Erro ao atualizar'], 400);
     }
 
     /**
@@ -55,6 +90,16 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::where('id' ,$id)->first();
+    
+        if(!$product) {
+            return response()->json(['message' => 'Produto não encontrado'], 404);
+        }
+        
+        if($product->delete()) {
+            return response()->json(['message' => 'Deletado com sucesso'], 200);
+        }
+        
+        return response()->json(['message' => 'Erro ao deletar'], 400);
     }
 }
