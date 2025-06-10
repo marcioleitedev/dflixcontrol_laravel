@@ -117,7 +117,7 @@ export default {
           this.form = {
             ...this.produto,
             category_id: this.produto.category?.id || '',
-            id_company: this.produto.company?.id || ''
+            company_id: this.produto.id_company?.id || ''
           }
         }
       } else {

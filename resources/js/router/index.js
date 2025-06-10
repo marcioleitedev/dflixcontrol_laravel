@@ -18,6 +18,7 @@ import Assinatura from '../views/Dashboard/Assinatura.vue'
 import Estoque from '../views/Dashboard/Estoque.vue'
 import Empresas from '../views/Dashboard/Empresas.vue'
 import Categorias from '../views/Dashboard/Categorias.vue'
+import Fornecedores from '../views/Dashboard/Fornecedores.vue'
 import Template from '../views/Dashboard/Template.vue'
 
 const routes = [
@@ -38,6 +39,7 @@ const routes = [
     { path: '/dashboard/estoque', component: Estoque, meta: { requiresAuth: true } },
     { path: '/dashboard/empresas', component: Empresas, meta: { requiresAuth: true } },
     { path: '/dashboard/categorias', component: Categorias, meta: { requiresAuth: true } },
+    { path: '/dashboard/fornecedores', component: Fornecedores, meta: { requiresAuth: true } },
     { path: '/dashboard/template', component: Template, meta: { requiresAuth: true } },
 ]
 

@@ -44,6 +44,7 @@
               <th>Nome</th>
               <th>Categoria</th>
               <th>Preço</th>
+              <th>Quantidade</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -52,6 +53,7 @@
               <td>{{ produto.name }}</td>
               <td>{{ produto.category?.name || 'N/A' }}</td>
               <td>R$ {{ produto.sale_price }}</td>
+              <td> {{ produto.quantity }}</td>
               <td>
                 <button class="btn btn-sm btn-warning me-2" @click="editarProduto(produto)">
                   <i class="bi bi-pencil"></i> Editar

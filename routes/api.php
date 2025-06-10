@@ -9,6 +9,7 @@ use App\Http\Controllers\PlansController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RolerController;
 use App\Http\Controllers\SignatureController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 
 Route::post('login', [AuthController::class, 'login']);
@@ -67,4 +68,11 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/products' , [ProductController::class , 'store']);
     Route::put('/products/{id}' , [ProductController::class , 'update']);
     Route::delete('/products/{id}' , [ProductController::class , 'destroy']);
+
+    // Suppliers Fornecedores
+    Route::get('/fornecedores' , [SupplierController::class , 'index']);
+    Route::get('/fornecedores/{id}' , [SupplierController::class , 'show']);
+    Route::post('/fornecedores' , [SupplierController::class , 'store']);
+    Route::put('/fornecedores/{id}' , [SupplierController::class , 'update']);
+    Route::delete('/fornecedores/{id}' , [SupplierController::class , 'destroy']);
 });
