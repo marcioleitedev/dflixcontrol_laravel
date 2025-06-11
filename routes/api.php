@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PerfilAffiliateController;
 use App\Http\Controllers\PlansController;
@@ -83,4 +84,11 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/empregados', [EmployeeController::class, 'store']);
     Route::put('/empregados/{id}', [EmployeeController::class, 'update']);
     Route::delete('/empregados/{id}', [EmployeeController::class, 'destroy']);
+
+    //Clientes
+    Route::get('/clientes', [CustomerController::class, 'index']);
+    Route::get('/clientes/{id}', [CustomerController::class, 'show']);
+    Route::post('/clientes', [CustomerController::class, 'store']);
+    Route::put('/clientes/{id}', [CustomerController::class, 'update']);
+    Route::delete('/clientes/{id}', [CustomerController::class, 'destroy']);
 });

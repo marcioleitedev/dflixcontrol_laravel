@@ -25,4 +25,9 @@ class Product extends Model
     {
         return $this->belongsTo(Categorie::class);
     }
+
+    public function budgetItems()
+    {
+        return $this->hasMany(BudgetItem::class);
+    }
 }
